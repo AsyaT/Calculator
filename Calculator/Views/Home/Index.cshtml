@@ -1,0 +1,28 @@
+﻿@model Calculator.Models.CalculatorModel
+
+@{
+    ViewBag.Title = "title";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="main-container">
+    <h2>Systems of linear equations solver</h2>
+
+    <h3>Please select number of variables:</h3>
+
+    <form action="/Home/Calculate" method="POST" class="js-main-form">
+    
+        <div class="top-content">
+            @Html.DropDownListFor(m=>m.VariableNumber,new SelectList( Model.VariableNumber), new { @class="js-variable-change"})
+        </div>
+
+        <ul class="middle-content js-line-conatiner">
+            <li>@Html.TextBoxFor(m => m.CoefficientMatrix[0][0], new { @class = "text-input", maxlength="14", required = "required", pattern="([+-])?\\d+(\\.)?\\d*", placeholder="Digits, or dot, or -"}) x<sub>1</sub> + @Html.TextBoxFor(m => m.CoefficientMatrix[0][1], new { @class = "text-input", maxlength = "14", required = "required", pattern = "([+-])?\\d+(\\.)?\\d*", placeholder = "Digits, or dot, or -" }) x<sub>2</sub> = @Html.TextBoxFor(m => m.FreeMembers[0], new { @class = "text-input", maxlength = "14", required = "required", pattern = "([+-])?\\d+(\\.)?\\d*", placeholder = "Digits, or dot, or -" })</li>
+            <li>@Html.TextBoxFor(m => m.CoefficientMatrix[1][0], new { @class = "text-input", maxlength = "14", required = "required", pattern = "([+-])?\\d+(\\.)?\\d*", placeholder = "Digits, or dot, or -" }) x<sub>1</sub> + @Html.TextBoxFor(m => m.CoefficientMatrix[1][1], new { @class = "text-input", maxlength = "14", required = "required", pattern = "([+-])?\\d+(\\.)?\\d*", placeholder = "Digits, or dot, or -" }) x<sub>2</sub> = @Html.TextBoxFor(m => m.FreeMembers[1], new { @class = "text-input", maxlength = "14", required = "required", pattern = "([+-])?\\d+(\\.)?\\d*", placeholder = "Digits, or dot, or -" })</li>
+        </ul>
+
+        <input type="submit" value="Calculete" class="ui-button"/>
+    </form>
+
+    <div class="js-result"></div>
+
+</div>
