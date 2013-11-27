@@ -15,13 +15,13 @@ namespace Calculator.Controllers
         [HttpPost]
         public ActionResult Calculate(FrontendModel incomeModel)
         {
-            if (!incomeModel.EquationSystem.Contains("="))
+            if (string.IsNullOrEmpty(incomeModel.EquationSystem) ||!incomeModel.EquationSystem.Contains("="))
             {
                 return Content("<p>This is not system of equations.</p>");
             }
             incomeModel.EquationSystem = incomeModel.EquationSystem.Replace("\r\n", " ");
 
-            CalculatorModel parsedModel = SystemEquationsParser.ParserEquations(incomeModel);
+            CalculatorModel parsedModel = SystemEquationsParser.ParserEquations(incomeModel.EquationSystem);
 
             if(parsedModel==null)
             {
