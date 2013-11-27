@@ -1,8 +1,8 @@
 ﻿@model Calculator.Models.ResultModel
 <h2>Result</h2>
 <ul class="middle-content">
-    @foreach(var item in Model.XList.Select((model, index) => new { index, model }))
+    @foreach(var item in Model.ResultList)
     {
-        <li> x<sub>@(item.index+1)</sub> = @(item.model) </li>
+        <li> @(item.Key) = @(item.Value) </li>
     }
 </ul>

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using Calculator.Code;
 using Calculator.Models;
 
@@ -14,21 +9,26 @@ namespace Calculator.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            var model = new CalculatorModel()
-                            {
-                                VariableNumber = new List<int>()
-                            };
-            for (int i = Constants.MinVariableCount; i <= Constants.MaxVariableCount; i++)
-            {
-                model.VariableNumber.Add(i);
-            }
-            
-            return View(model);
+            return View();
         }
-
-        public ActionResult Calculate(CalculatorModel incomeModel)
+        
+        [HttpPost]
+        public ActionResult Calculate(FrontendModel incomeModel)
         {
-            var result = Algoritms.InversMatrixMethod(incomeModel);
+            if (!incomeModel.EquationSystem.Contains("="))
+            {
+                return Content("<p>This is not system of equations.</p>");
+            }
+            incomeModel.EquationSystem = incomeModel.EquationSystem.Replace("\r\n", " ");
+
+            CalculatorModel parsedModel = SystemEquationsParser.ParserEquations(incomeModel);
+
+            if(parsedModel==null)
+            {
+                return Content("<p>System is incorrect.</p>");
+            }
+
+            var result = Algoritms.InversMatrixMethod(parsedModel);
 
             if ( result == null )
             {

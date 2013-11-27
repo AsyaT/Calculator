@@ -70,11 +70,14 @@
   <ItemGroup>
     <Compile Include="Code\Algoritms.cs" />
     <Compile Include="Code\Constants.cs" />
+    <Compile Include="Code\ParsedStructure.cs" />
+    <Compile Include="Code\SystemEquationsParser.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\CalculatorModel.cs" />
+    <Compile Include="Models\FrontendModel.cs" />
     <Compile Include="Models\ResultModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

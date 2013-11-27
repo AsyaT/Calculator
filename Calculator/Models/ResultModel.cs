@@ -7,6 +7,6 @@ namespace Calculator.Models
 {
     public class ResultModel
     {
-        public double[] XList { get; set; }
+        public IDictionary<string,double> ResultList { get; set; }
     }
 }

@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Linq;
+using System.Collections.Generic;
 using Calculator.Models;
 using MathNet.Numerics.LinearAlgebra.Double;
 using MathNet.Numerics.LinearAlgebra.Generic;
@@ -10,22 +10,11 @@ namespace Calculator.Code
     {
         public static ResultModel InversMatrixMethod(CalculatorModel input)
         {
-            var size = input.FreeMembers.Count;
             Vector<double> resultVector;
-            var result = new ResultModel();
+            var result = new ResultModel(){ResultList = new Dictionary<string, double>()};
             var vector = new DenseVector(input.FreeMembers);
-
-            var tmp = new double[size,size];
-
-            for (int i = 0; i < size; i++)
-            {
-                for (int j = 0; j < size; j++)
-                {
-                    tmp[i, j] = input.CoefficientMatrix[i][j];
-                }
-            }
              
-            var matrix = new DenseMatrix(tmp);
+            var matrix = new DenseMatrix(input.CoefficientMatrix);
 
             if (matrix.Determinant() == 0.0)
             {
@@ -38,11 +27,9 @@ namespace Calculator.Code
                 resultVector = inverseMatrix.Multiply(vector);
             }
 
-            result.XList = resultVector.ToArray();
-
-            for(int i=0;i<size;i++)
+            foreach(var value in input.ValColumnRelation)
             {
-                result.XList[i] = Math.Round(result.XList[i], Constants.RoundValue);
+                result.ResultList.Add(value.Key, resultVector[value.Value]);
             }
 
             return result;

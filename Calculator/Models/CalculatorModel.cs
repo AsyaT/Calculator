@@ -7,10 +7,10 @@ namespace Calculator.Models
 {
     public class CalculatorModel
     {
-        public List<int> VariableNumber { get; set; }
-
-        public double[][] CoefficientMatrix { get; set; }
+        public double[,] CoefficientMatrix { get; set; }
 
         public List<double> FreeMembers { get; set; }
+
+        public IDictionary<string, int> ValColumnRelation { get; set; } 
     }
 }
