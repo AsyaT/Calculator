@@ -10,16 +10,17 @@ namespace Calculator.Code
     {
         public static CalculatorModel ParserEquations(string inputStr)
         {
-            if (!Regex.Match(inputStr, @"(((([+-])?(\d+\.?\d*)?)([a-z]+))+=(\d+\.?\d*))+").Success)
-            {
-                return null;
-            }
+            string pattern = @"(((([+-])?(\d+\.?\d*)?)\*?([a-z]+)\s?)+=\s?(\d+\.?\d*))+";
+
+            //if (!Regex.Match(inputStr, pattern).Success)
+            //{
+            //    return null;
+            //}
 
             int equationCount = 0;
             var freeMembers = new List<double>();
             var matrixTree = new List<ParsedStructure>();
-
-            string pattern = @"(((([+-])?(\d+\.?\d*)?)([a-z]+))+=(\d+\.?\d*))+";
+            
             Regex r = new Regex(pattern, RegexOptions.IgnoreCase);
             Match m = r.Match(inputStr);
 
