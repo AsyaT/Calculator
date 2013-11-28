@@ -10,12 +10,12 @@ namespace Calculator.Code
     {
         public static CalculatorModel ParserEquations(string inputStr)
         {
-            string pattern = @"(((([+-])?(\d+\.?\d*)?)\*?([a-z]+)\s?)+=\s?(\d+\.?\d*))+";
+            string pattern = @"(((([+-])?(\d+\.?\d*)?)\*?([a-z]+\d*)\s?)+=\s?(\d+\.?\d*))+";
 
-            //if (!Regex.Match(inputStr, pattern).Success)
-            //{
-            //    return null;
-            //}
+            if (!Regex.Match(inputStr, pattern).Success)
+            {
+                return null;
+            }
 
             int equationCount = 0;
             var freeMembers = new List<double>();
