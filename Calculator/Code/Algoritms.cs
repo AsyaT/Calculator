@@ -29,7 +29,7 @@ namespace Calculator.Code
 
             foreach(var value in input.ValColumnRelation)
             {
-                result.ResultList.Add(value.Key, resultVector[value.Value]);
+                result.ResultList.Add(value.Key, Math.Round(resultVector[value.Value],Constants.RoundValue));
             }
 
             return result;
