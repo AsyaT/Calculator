@@ -10,7 +10,7 @@ namespace Calculator.Code
     {
         public static CalculatorModel ParserEquations(string inputStr)
         {
-            string pattern = @"(((([+-])?(\d+\.?\d*)?)\*?([a-z]+\d*)\s?)+=\s?(\d+\.?\d*))+";
+            string pattern = @"(((([+-])?(\d+\.?\d*)?)\*?([a-z]+\d*))+=(\d+\.?\d*))+";
 
             if (!Regex.Match(inputStr, pattern).Success)
             {

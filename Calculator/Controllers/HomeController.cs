@@ -19,7 +19,7 @@ namespace Calculator.Controllers
             {
                 return Content("<p>This is not system of equations.</p>");
             }
-            incomeModel.EquationSystem = incomeModel.EquationSystem.Replace("\r\n", " ");
+            incomeModel.EquationSystem = incomeModel.EquationSystem.Replace(" ","").Replace("\r\n", " ");
 
             CalculatorModel parsedModel = SystemEquationsParser.ParserEquations(incomeModel.EquationSystem);
 
