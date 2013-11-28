@@ -10,64 +10,53 @@ namespace Calculator.Code
     {
         public static CalculatorModel ParserEquations(string inputStr)
         {
-            if (!Regex.Match(inputStr, @"((([+-])?([\d+(\.)?\d*]*)([a-z]+))+=(\d+(\.)?\d*))+").Success)
+            if (!Regex.Match(inputStr, @"(((([+-])?(\d+\.?\d*)?)([a-z]+))+=(\d+\.?\d*))+").Success)
             {
                 return null;
             }
 
-            int equationCount = inputStr.Split(' ').Count();
+            int equationCount = 0;
+            var freeMembers = new List<double>();
+            var matrixTree = new List<ParsedStructure>();
+
+            string pattern = @"(((([+-])?(\d+\.?\d*)?)([a-z]+))+=(\d+\.?\d*))+";
+            Regex r = new Regex(pattern, RegexOptions.IgnoreCase);
+            Match m = r.Match(inputStr);
+
+            while (m.Success)
+            {
+                Group freeMember = m.Groups[7];
+                CaptureCollection ccfm = freeMember.Captures;
+
+                freeMembers.Add( Convert.ToDouble( ccfm[0].Value));
+
+                Group coef = m.Groups[3];
+                CaptureCollection cc_coef = coef.Captures;
+                
+                Group varname = m.Groups[6];
+                CaptureCollection cc_varname = varname.Captures;
+                
+                for (int i = 0; i < cc_varname.Count; i++)
+                {
+                    ParsedStructure leaf = new ParsedStructure()
+                                               {
+                                                   EqualNumber = equationCount,
+                                                   Coef = cc_coef[i].Value=="-" ? -1 :( cc_coef[i].Value=="+" || cc_coef[i].Value=="" ? 1 : Convert.ToDouble( cc_coef[i].Value )),
+                                                   VarName = cc_varname[i].Value
+                                               };
+                    matrixTree.Add(leaf);
+                }
+                
+                m = m.NextMatch();
+                equationCount++;
+            }
 
             CalculatorModel result = new CalculatorModel()
                                          {
                                              CoefficientMatrix = new double[equationCount, equationCount],
-                                             FreeMembers = new List<double>(),
+                                             FreeMembers = freeMembers,
                                              ValColumnRelation = new Dictionary<string, int>()
                                          };
-            var matrixTree = new List<ParsedStructure>();
-
-            int i = 0;
-            foreach (var equal in inputStr.Split(' '))
-            {
-                string pattern = @"(.*)=(\d+(\.)?\d*)";
-                Regex r = new Regex(pattern, RegexOptions.IgnoreCase);
-                Match m = r.Match(equal);
-
-                if (m.Success)
-                {
-                    Group free = m.Groups[2];
-                    CaptureCollection cc = free.Captures;
-                    result.FreeMembers.Add(Convert.ToDouble(cc[0].Value));
-                }
-                
-                string patternSlag = @"([+-])?([\d+(\.)?\d*]*)([a-z]+)";
-                Regex reg = new Regex(patternSlag, RegexOptions.IgnoreCase);
-                Match mat = reg.Match(equal);
-                while (mat.Success)
-                {
-                    ParsedStructure leaf = new ParsedStructure();
-
-                    Group sign = mat.Groups[1];
-                    CaptureCollection cc_sign = sign.Captures;
-
-                    Group coef = mat.Groups[2];
-                    CaptureCollection cc_coef = coef.Captures;
-                    double dCoef = cc_coef[0].Value == "" ? 1.0 : Convert.ToDouble(cc_coef[0].Value);
-
-                    Group cvarnameoef = mat.Groups[3];
-                    CaptureCollection cc_cvarnameoef = cvarnameoef.Captures;
-
-                    leaf = new ParsedStructure()
-                               {
-                                   EqualNumber = i,
-                                   Coef = (cc_sign.Count > 0 && cc_sign[0].Value == "-") ? (-1) * dCoef : dCoef,
-                                   VarName = cc_cvarnameoef[0].Value
-                               };
-
-                    matrixTree.Add(leaf);
-                    mat = mat.NextMatch();
-                }
-                i++;
-            }
 
             int column = 0;
             foreach (var item in matrixTree)
